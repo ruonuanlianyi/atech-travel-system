@@ -53,6 +53,13 @@ const Dashboard: React.FC = () => {
         { label: '已订票', value: stats.booked || 0, color: '#10b981' },
         { label: '总订单', value: stats.total || 0, color: '#64748b' },
       ];
+    } else if (user?.role === 'admin') {
+      return [
+        { label: '总用户', value: stats.total_users || 0, color: '#8b5cf6' },
+        { label: '总订单', value: stats.total || 0, color: '#64748b' },
+        { label: '待审核', value: stats.pending || 0, color: '#f59e0b' },
+        { label: '已完成', value: stats.completed || 0, color: '#10b981' },
+      ];
     } else {
       return [
         { label: '待订票', value: stats.approved || 0, color: '#0ea5e9' },
@@ -88,6 +95,17 @@ const Dashboard: React.FC = () => {
                 <line x1="5" y1="12" x2="19" y2="12" />
               </svg>
               创建订单
+            </Button>
+          )}
+          {user?.role === 'admin' && (
+            <Button onClick={() => navigate('/admin/users')}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+              用户管理
             </Button>
           )}
         </div>

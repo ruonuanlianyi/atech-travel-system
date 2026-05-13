@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import CreateOrder from './pages/CreateOrder';
 import OrderDetail from './pages/OrderDetail';
+import AdminUsers from './pages/AdminUsers';
 
 const PrivateRoute: React.FC<{ children: React.ReactElement }> = ({ children }) => {
   const { user, isLoading } = useAuth();
@@ -51,6 +52,14 @@ const App: React.FC = () => {
             element={
               <PrivateRoute>
                 <OrderDetail />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <PrivateRoute>
+                <AdminUsers />
               </PrivateRoute>
             }
           />

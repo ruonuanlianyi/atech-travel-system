@@ -396,9 +396,106 @@ app.get('/api/stats', authenticateToken, (req, res) => {
       booked: db.orders.filter(o => o.status === 'booked').length,
       total: db.orders.length
     };
+  } else if (req.user.role === 'admin') {
+    stats = {
+      total_users: db.users.length,
+      total: db.orders.length,
+      pending: db.orders.filter(o => o.status === 'pending').length,
+      completed: db.orders.filter(o => o.status === 'completed').length
+    };
   }
 
   res.json(stats);
+});
+
+// Admin: Get all users
+app.get('/api/admin/users', authenticateToken, (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ error: 'Admin access required' });
+  }
+
+  const db = readDB();
+  const users = db.users.map(u => ({
+    id: u.id,
+    username: u.username,
+    name: u.name,
+    role: u.role,
+    created_at: u.created_at
+  }));
+
+  res.json(users);
+});
+
+// Admin: Create new user
+app.post('/api/admin/users', authenticateToken, (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ error: 'Admin access required' });
+  }
+
+  const { username, password, name, role } = req.body;
+
+  if (!username || !password || !name || !role) {
+    return res.status(400).json({ error: 'All fields are required' });
+  }
+
+  if (!['sales', 'operations', 'supplier', 'admin'].includes(role)) {
+    return res.status(400).json({ error: 'Invalid role' });
+  }
+
+  const db = readDB();
+
+  // Check if username already exists
+  if (db.users.find(u => u.username === username)) {
+    return res.status(400).json({ error: 'Username already exists' });
+  }
+
+  const hashedPassword = bcrypt.hashSync(password, 10);
+  const newUser = {
+    id: db.counters.userId++,
+    username,
+    password: hashedPassword,
+    name,
+    role,
+    created_at: new Date().toISOString()
+  };
+
+  db.users.push(newUser);
+  writeDB(db);
+
+  res.json({
+    success: true,
+    user: {
+      id: newUser.id,
+      username: newUser.username,
+      name: newUser.name,
+      role: newUser.role
+    }
+  });
+});
+
+// Admin: Delete user
+app.delete('/api/admin/users/:id', authenticateToken, (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ error: 'Admin access required' });
+  }
+
+  const userId = parseInt(req.params.id);
+  const db = readDB();
+
+  // Prevent deleting yourself
+  if (userId === req.user.id) {
+    return res.status(400).json({ error: 'Cannot delete your own account' });
+  }
+
+  const userIndex = db.users.findIndex(u => u.id === userId);
+  if (userIndex === -1) {
+    return res.status(404).json({ error: 'User not found' });
+  }
+
+  db.users.splice(userIndex, 1);
+  writeDB(db);
+
+  res.json({ success: true });
 });
 
 // Start server

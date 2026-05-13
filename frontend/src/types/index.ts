@@ -2,7 +2,7 @@ export interface User {
   id: number;
   username: string;
   name: string;
-  role: 'sales' | 'operations' | 'supplier';
+  role: 'sales' | 'operations' | 'supplier' | 'admin';
 }
 
 export interface Order {
@@ -67,6 +67,8 @@ export interface Stats {
   pending?: number;
   approved?: number;
   booked?: number;
+  completed?: number;
   total: number;
   pending_changes?: number;
+  total_users?: number;
 }
