@@ -2,6 +2,7 @@
   "name": "atech-travel-frontend",
   "version": "1.0.0",
   "private": true,
+  "homepage": "/atech-travel-system",
   "dependencies": {
     "axios": "^1.6.2",
     "date-fns": "^3.0.6",

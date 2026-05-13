@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/static/css/main.49b4d0a5.css",
-    "main.js": "/static/js/main.69f3185b.js",
-    "index.html": "/index.html",
-    "main.49b4d0a5.css.map": "/static/css/main.49b4d0a5.css.map",
-    "main.69f3185b.js.map": "/static/js/main.69f3185b.js.map"
+    "main.css": "/atech-travel-system/static/css/main.49b4d0a5.css",
+    "main.js": "/atech-travel-system/static/js/main.69f3185b.js",
+    "index.html": "/atech-travel-system/index.html",
+    "main.49b4d0a5.css.map": "/atech-travel-system/static/css/main.49b4d0a5.css.map",
+    "main.69f3185b.js.map": "/atech-travel-system/static/js/main.69f3185b.js.map"
   },
   "entrypoints": [
     "static/css/main.49b4d0a5.css",
