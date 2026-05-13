@@ -1,0 +1,41 @@
+redirectsOrigin = "config"
+plugins = []
+headers = []
+
+[functions]
+
+[functions."*"]
+
+[build]
+publish = "/Users/Min/.claude/skills/frontend-design/atech-travel-system/frontend/build"
+publishOrigin = "config"
+commandOrigin = "config"
+base = "/Users/Min/.claude/skills/frontend-design/atech-travel-system/frontend"
+command = "npm run build"
+
+[build.environment]
+REACT_APP_API_URL = "https://atech-travel-system-production.up.railway.app/api"
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]
