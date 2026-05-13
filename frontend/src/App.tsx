@@ -20,7 +20,7 @@ const PrivateRoute: React.FC<{ children: React.ReactElement }> = ({ children }) 
 const App: React.FC = () => {
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <BrowserRouter basename="/atech-travel-system">
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route
