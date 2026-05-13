@@ -14,17 +14,78 @@ app.use(express.json());
 
 const JWT_SECRET = process.env.JWT_SECRET || 'atech_travel_secret_key';
 
-// Database helper functions
-const readDB = () => {
+// Initialize database if it doesn't exist
+const initializeDatabase = () => {
   if (!fs.existsSync(dbPath)) {
-    return {
-      users: [],
+    console.log('Database not found, initializing...');
+    const hashedPassword = bcrypt.hashSync('123456', 10);
+
+    const db = {
+      users: [
+        {
+          id: 1,
+          username: 'admin',
+          password: hashedPassword,
+          name: '系统管理员',
+          role: 'admin',
+          created_at: new Date().toISOString()
+        },
+        {
+          id: 2,
+          username: 'sales1',
+          password: hashedPassword,
+          name: '张销售',
+          role: 'sales',
+          created_at: new Date().toISOString()
+        },
+        {
+          id: 3,
+          username: 'sales2',
+          password: hashedPassword,
+          name: '李销售',
+          role: 'sales',
+          created_at: new Date().toISOString()
+        },
+        {
+          id: 4,
+          username: 'ops1',
+          password: hashedPassword,
+          name: '王运营',
+          role: 'operations',
+          created_at: new Date().toISOString()
+        },
+        {
+          id: 5,
+          username: 'supplier1',
+          password: hashedPassword,
+          name: '赵供应商',
+          role: 'supplier',
+          created_at: new Date().toISOString()
+        }
+      ],
       orders: [],
       bookingInfo: [],
       changeRequests: [],
       activityLogs: [],
-      counters: { userId: 1, orderId: 1, bookingInfoId: 1, changeRequestId: 1, activityLogId: 1 }
+      counters: { userId: 6, orderId: 1, bookingInfoId: 1, changeRequestId: 1, activityLogId: 1 }
     };
+
+    fs.writeFileSync(dbPath, JSON.stringify(db, null, 2));
+    console.log('✅ Database initialized with demo accounts');
+    console.log('Admin: admin / 123456');
+    console.log('Sales: sales1 / 123456');
+    console.log('Operations: ops1 / 123456');
+    console.log('Supplier: supplier1 / 123456');
+  }
+};
+
+// Initialize database on startup
+initializeDatabase();
+
+// Database helper functions
+const readDB = () => {
+  if (!fs.existsSync(dbPath)) {
+    initializeDatabase();
   }
   return JSON.parse(fs.readFileSync(dbPath, 'utf8'));
 };
