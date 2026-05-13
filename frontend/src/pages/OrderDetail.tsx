@@ -32,10 +32,6 @@ const OrderDetailPage: React.FC = () => {
     booking_notes: '',
   });
 
-  useEffect(() => {
-    fetchOrder();
-  }, [id]);
-
   const fetchOrder = async () => {
     try {
       const response = await api.get(`/orders/${id}`);
@@ -47,6 +43,11 @@ const OrderDetailPage: React.FC = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchOrder();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
 
   const handleReview = async () => {
     try {
